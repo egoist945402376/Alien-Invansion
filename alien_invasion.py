@@ -3,7 +3,9 @@ import sys
 import pygame
 
 from settings import Settings
-from Ship import Ship
+from ship import Ship
+from xiaomeiyan import Xiaomeiyan
+import game_functions as gf
 
 def run_game():
     pygame.init()
@@ -15,19 +17,17 @@ def run_game():
     pygame.display.set_caption("Alien Invasion")
 
     # 创建飞船
-    ship = Ship(screen)
+    ship = Ship(ai_settings, screen)
+    xiaomeiyan = Xiaomeiyan(screen)
 
     # background color
     bg_color = ai_settings.bg_color
 
     while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-
-        screen.fill(bg_color)
-        ship.blitme()
-
-        pygame.display.flip()
+        gf.check_events(ship)
+        ship.update()
+        #Update screen
+        gf.update_screen(ai_settings,screen,ship)
+        #gf.for_fun_update_screen(ai_settings, screen, ship, xiaomeiyan)
 
 run_game()
