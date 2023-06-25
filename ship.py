@@ -16,6 +16,8 @@ class Ship():
 
         self.moving_right = False
         self.moving_left = False
+        self.moving_forward = False
+        self.moving_back = False
 
 
     def blitme(self):
