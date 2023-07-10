@@ -8,6 +8,8 @@ from xiaomeiyan import Xiaomeiyan
 import game_functions as gf
 from pygame.sprite import Group
 from game_stats import GameStats
+from button import Button
+from scoreboard import Scoreboard
 from bullet import Bullet
 from alien import Alien
 
@@ -21,7 +23,9 @@ def run_game():
     screen = pygame.display.set_mode((ai_settings.screen_width, ai_settings.screen_height))
     pygame.display.set_caption("Alien Invasion")
 
+    play_button = Button(ai_settings, screen, "Play")
     stats = GameStats(ai_settings)
+    sb = Scoreboard(ai_settings, screen, stats)
 
     # 创建飞船
     ship = Ship(ai_settings, screen)
@@ -43,14 +47,14 @@ def run_game():
 
     # 逻辑: 检测按键 做出对应行为 更新对象的属性 再更新屏幕
     while True:
-        gf.check_events(ai_settings, screen, ship, bullets)
+        gf.check_events(ai_settings, screen, stats, sb, play_button, ship, aliens, bullets)
         if stats.game_active:
             ship.update()
             # 调用update时 编组bullets 自动对其内所有精灵对象调用update
-            gf.update_bullets(ai_settings,screen, ship, aliens, bullets)
+            gf.update_bullets(ai_settings,screen, stats, sb, ship, aliens, bullets)
             #Update screen
-            gf.update_aliens(ai_settings, stats, screen, ship, aliens, bullets)
-        gf.update_screen(ai_settings,screen,ship, aliens, bullets)
+            gf.update_aliens(ai_settings, stats, sb, screen, ship, aliens, bullets)
+        gf.update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_button)
         #gf.for_fun_update_screen(ai_settings, screen, ship, xiaomeiyan)
 
 run_game()
